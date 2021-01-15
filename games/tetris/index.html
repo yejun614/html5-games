@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    
+    <title>Tetris</title>
+    
+    <!-- Vector -->
+    <script src="scripts/vector.js" type="text/javascript"></script>
+    <!-- Block -->
+    <script src="scripts/block.js" type="text/javascript"></script>
+    <!-- Tetris Game Script -->
+    <script src="scripts/tetris.js" type="text/javascript"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/main.css" type="text/css">
+  </head>
+  
+  <body>
+    <div id="debug">
+      <div>FRAME <span id="frame"></span></div>
+      <div>TIME-STAMP <span id="timestamp"></span></div>
+    </div>
+    
+    <div class="center-box">
+      <div class="score-box">
+        SCORE <span id="score"></span>
+      </div>
+      
+      <canvas id="game-canvas"></canvas>
+    </div>
+    
+    <!-- JS Entry point -->
+    <script src="scripts/main.js" type="text/javascript"></script>
+  </body>
+</html>
