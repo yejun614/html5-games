@@ -1,104 +1,89 @@
 
-const blockShapeItems = [
-  'l', 'L', 'J', 'O', 'S', 'T', 'Z'
-];
-
-const blockShapes = {
-  l: [
-    [ 1, 1, 1, 1 ],
-  ],
-  L: [
-    [ 1, 0, 0 ],
-    [ 1, 1, 1 ],
-  ],
-  J: [
-    [ 0, 0, 1 ],
-    [ 1, 1, 1 ]
-  ],
-  O: [
-    [ 1, 1 ],
-    [ 1, 1 ],
-  ],
-  S: [
-    [ 0, 1, 1 ],
-    [ 1, 1, 0 ],
-  ],
-  T: [
-    [ 0, 1, 0 ],
-    [ 1, 1, 1 ],
-  ],
-  Z: [
-    [ 1, 1, 0 ],
-    [ 0, 1, 1 ],
-  ]
-};
-
-function getRandomShape() {
-  const num = Math.floor(Math.random() * 7);
-  const shape = blockShapeItems[num];
-  
-  return blockShapes[shape];
-}
-
 class Block {
-  constructor (shape=null) {
+  constructor (tileWidth=10, tileHeight=10, shape=null) {
     if (shape == null)
       shape = getRandomShape();
     
     this.shape = shape;
     this.rotate = 0;
     
-    this.pos = new vec2(0, 0);
-    this.size = new vec2(10, 10);
+    // Set position
+    this.x = 0;
+    this.y = 0;
+    
+    // Set tile size
+    this.tileWidth = tileWidth;
+    this.tileHeight = tileHeight;
   }
   
   draw (ctx) {
-    // Set colors
-    ctx.fillStyle = '#2039CC';
-    ctx.strokeStyle = '#192DA1';
-    
     // Set stroke line height
     const line = 1;
     ctx.lineHeight = line;
     
-    // Draw
-    const rows = this.shape;
-    for (let y=0; y<rows.length; y++) {
-      const column = rows[y];
+    // Get tiles
+    this.forEach((tile, y, x) => {
+      // Set color
+      ctx.fillStyle = blockRectColors[tile];
+      ctx.strokeStyle = blockLineColors[tile];
       
-      for (let x=0; x<column.length; x++) {
-        if (column[x] == 0) continue;
-        
-        const px = this.pos.x + (x * this.size.x);
-        const py = this.pos.y + (y * this.size.y);
-        
-        ctx.fillRect(px, py, this.size.x, this.size.y);
-        ctx.strokeRect(px, py, this.size.x, this.size.y);
-      }
-    }
+      // Set position
+      const px = this.x + (x * this.tileWidth);
+      const py = this.y + (y * this.tileHeight);
+      
+      // Draw
+      ctx.fillRect(px, py, this.tileWidth, this.tileHeight);
+      ctx.strokeRect(px, py, this.tileWidth, this.tileHeight);
+    }, true);
   }
   
   flip () {
+    // New shape
+    const shape = [...Array(this.width)].map(() => Array(this.height).fill(0));
+    
+    // Flipping
+    this.forEach((tile, y, x) => shape[x][y] = tile);
+    
+    // Update shape
+    this.shape = shape;
+  }
+  
+  rotation (dir=1) {
     const rows = this.shape;
-    const width = rows.length;
-    const height = rows[0].length;
+    const shape = new Array(this.width);
     
-    const shape = new Array(height);
-    
-    for (let y=0; y<height; y++)
-      shape[y] = new Array(width);
+    for (let y=0; y<this.width; y++)
+      shape[y] = new Array(this.height);
     
     for (let y=0; y<rows.length; y++) {
       const column = rows[y];
-    
-      // Flipping
+      
+      // Rotate
       for (let x=0; x<column.length; x++) {
-        shape[x][y] = column[x];
+        if (dir > 0) {
+          shape[x][this.height-1-y] = column[x];
+        } else {
+          shape[this.width-1-x][y] = column[x];
+        }
       }
     }
     
     // Update shape
     this.shape = shape;
+  }
+  
+  forEach (callback, tileCheck=false) {
+    const rows = this.shape;
+    
+    for (let y=0; y<rows.length; y++) {
+      const column = rows[y];
+      
+      for (let x=0; x<column.length; x++) {
+        if (tileCheck && column[x] == 0) continue;
+        
+        callback(column[x], y, x);
+      }
+    }
   }
   
   get width () {
