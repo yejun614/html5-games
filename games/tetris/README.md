@@ -20,8 +20,5 @@
 - R : Game Restart
 - ESE : Game Pause
 
-## Colors
-- [Color Set](https://color.adobe.com/ko/Copy%20of%20Blue%20Royal%20Shades-color-theme-10309377)
-
 ## Review
 
