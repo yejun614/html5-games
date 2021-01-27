@@ -261,10 +261,6 @@ class TetrisGame {
   }
   
   update (frame) {
-    // Debug messages
-    document.getElementById('frame').innerHTML = frame;
-    document.getElementById('timestamp').innerHTML = frame - this.timestamp;
-    
     // Game Over check
     if (this.isGameOver()) {
       this.gameOver();
