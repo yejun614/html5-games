@@ -23,5 +23,8 @@
 ## Colors
 - [Color Set](https://color.adobe.com/ko/Copy%20of%20Blue%20Royal%20Shades-color-theme-10309377)
 
+## Fonts
+- [VT323](https://fonts.google.com/specimen/VT323?query=VT323)
+
 ## Review
 
