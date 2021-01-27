@@ -1,3 +1,8 @@
+/* Debug */
+#debug {
+  display: none;
+}
+
 /* Center Box */
 .center-box {
   width: 100%;
