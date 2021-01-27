@@ -27,24 +27,19 @@ class ScreenController {
     this.animateContoller = window.requestAnimationFrame(frame => this.update(frame));
   }
   
-  clear () {
-    this.isGameOver = false;
-    this.gameTime = 0;
-    this.timestamp = null;
-  }
-  
   update (frame) {
-    // Check flag and clear
-    if (this.game.status === 'restart' || (this.isGameOver && this.game.status === 'play'))
-      this.clear();
+    // Play time
+    if (this.isGameOver && this.game.status === 'play') {
+      this.isGameOver = false;
+      this.gameTime = 0;
+      this.timestamp = null;
+    }
     
-    // Set timestamp
-    if (this.timestamp == null)
-      this.timestamp = frame;
+    if (this.timestamp == null) this.timestamp = frame;
     
     if (this.game.status === 'play' && frame - this.timestamp > 1000) {
-      this.gameTime ++;         // Counting play time
-      this.timestamp = frame;   // Set timestamp
+      this.gameTime ++;
+      this.timestamp = frame;
     }
     
     // Update
@@ -52,18 +47,15 @@ class ScreenController {
     this.playtime.innerHTML = this.gameTime + ' Sec';
     this.status.innerHTML = '';
     
-    // Check game status
     if (this.game.status === 'stop') {
       this.status.innerHTML = 'STOPPING';
       
     } else if (this.game.status === 'gameover') {
       this.status.innerHTML = 'Game Over!<br />Press ESC key restart the game.';
       
-      // Set gameover flag
       this.isGameOver = true;
     }
     
-    // Next frame
     this.animate();
   }
 }
