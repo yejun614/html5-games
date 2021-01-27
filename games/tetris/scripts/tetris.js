@@ -1,6 +1,6 @@
 
 class TetrisGame {
-  constructor (selector) {
+  constructor (selector, data=null) {
     // Get canvas and 2d context
     this.canvas = document.querySelector(selector);
     this.context = this.canvas.getContext('2d');
@@ -20,14 +20,28 @@ class TetrisGame {
     this.tileColumns = 32;
     this.tileRows = 48;
     
-    this.initial();   // 1. Initial
-    this.animate();   // 2. Start
+    this.initial(data);   // 1. Initial
+    this.animate();       // 2. Start
     
     // Events
     document.addEventListener('keydown', event => this.keydown(event));
   }
   
-  initial () {
+  initial (data=null) {
+    // Apply data
+    if (data) {
+      // Block speed
+      this.speed = data.speed ? data.speed : 500;
+      
+      // Tiles size
+      this.tileWidth = data.tileWidth ? data.tileWidth : 10;
+      this.tileHeight = data.tileHeight ? data.tileHeight : 10;
+      
+      // Tiles length
+      this.tileColumns = data.tileColumns ? data.tileColumns : 32;
+      this.tileRows = data.tileRows ? data.tileRows : 48;
+    }
+    
     // Set score
     this.score = 0;
     
@@ -235,9 +249,15 @@ class TetrisGame {
     // Stop update
     this.stop();
     
-    // Initial & Start animation
-    this.initial();
-    this.animate();
+    // Change status
+    this.status = 'restart';
+    
+    // Delay(100 milliseconds) for 'screen.js'
+    setTimeout(()=>{
+      // Restart game
+      this.initial();
+      this.animate();
+    }, 100);
   }
   
   update (frame) {
