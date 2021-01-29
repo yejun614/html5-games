@@ -1,6 +1,9 @@
 
 class VideoGame {
   constructor () {
+    this.fps = 10;
+    this.gameTimestamp = null
+    
     this.animateController = null;
     
     this.state = 'play';  // play, stop
@@ -30,8 +33,14 @@ class VideoGame {
   }
   
   updateBack (frame) {
-    // Call update function
-    this.updateFunc(frame);
+    if (this.gameTimestamp == null) this.gameTimestamp = frame;
+    
+    if (frame - this.gameTimestamp >= this.fps) {
+      // Call update function
+      this.updateFunc(frame);
+      
+      this.gameTimestamp = frame;
+    }
     
     // Next frame
     this.animateController = window.requestAnimationFrame(frame => this.updateBack(frame));
@@ -52,16 +61,16 @@ class VideoGame {
   keyDownEvent (event) {
     const code = event.code;
     this.keys[code] = true;
-    
-    // toggle
-    if (this.toggleKeys[code] != undefined) {
-      this.toggleKeys[code] = !this.toggleKeys[code];
-    }
   }
   
   keyUpEvent (event) {
     const code = event.code;
     this.keys[code] = false;
+    
+    // toggle
+    if (this.toggleKeys[code] != undefined) {
+      this.toggleKeys[code] = !this.toggleKeys[code];
+    }
   }
 }
 
@@ -100,8 +109,8 @@ class PongGame extends VideoGame {
     this.counter = new Counter(this.width/2, this.height/2, 1000);
     
     // Create paddles
-    this.paddleA = new Paddle(5, 100);
-    this.paddleB = new Paddle(5, 100);
+    this.paddleA = new Paddle(5, 100, this.height);
+    this.paddleB = new Paddle(5, 100, this.height);
     
     // Create ball
     this.ball = new Ball(10);
@@ -165,8 +174,9 @@ class PongGame extends VideoGame {
     ctx.font = '40px san-serlf bold';
     ctx.fillStyle = '#525252';
     
-    // TODO: 점수가 두자리 이상일 경우 x 좌표 조정이 필요함
-    ctx.fillText(this.scoreA, this.width/2 - 40, 40);
+    ctx.textAlign = 'right';
+    ctx.fillText(this.scoreA, this.width/2 - 20, 40);
+    ctx.textAlign = 'left';
     ctx.fillText(this.scoreB, this.width/2 + 20, 40);
   }
   
@@ -189,9 +199,15 @@ class PongGame extends VideoGame {
     if (y < 0 || y > this.height) this.ball.flip(false, true);
     
     // Paddle (A)
-    if (this.paddleA.collisionWith(x, y)) this.ball.flip(true, false);
+    if (this.paddleA.collisionWith(x, y))  {
+      this.ball.x += 1;
+      this.ball.flip(true, false);
+    }
     // Paddle (B)
-    if (this.paddleB.collisionWith(x, y)) this.ball.flip(true, false);
+    if (this.paddleB.collisionWith(x, y))  {
+      this.ball.x -= 1;
+      this.ball.flip(true, false);
+    }
     
     // No collision
     return false;
@@ -200,6 +216,11 @@ class PongGame extends VideoGame {
   update (frame) {
     // Keyboard
     this.keyboard();
+    
+    // Pause
+    if (this.state === "stop") {
+      return;
+    }
     
     // Clear canvas
     this.clear();
@@ -214,7 +235,7 @@ class PongGame extends VideoGame {
       return;
     }
     
-    // Check ball direction
+    // Check GameOver
     if (this.isGameOver) {
       this.reset();  // Reset
     }
@@ -232,8 +253,6 @@ class PongGame extends VideoGame {
     
     // Check collision
     if (this.collision()) {
-      console.log('collision');
-      
       // Set GameOver flag
       this.isGameOver = true;
       
@@ -260,7 +279,7 @@ class PongGame extends VideoGame {
     ctx.fillRect(this.width/2+5, this.height/2-10, 5, 20);
     
     // Stop
-    this.stop();
+    this.state = 'stop';
   }
   
   keyboard () {
@@ -271,6 +290,9 @@ class PongGame extends VideoGame {
       } else {
         this.play();
       }
+      
+      // Toggle
+      this.toggleKeys['Escape'] = false;
     }
     
     // Check play state

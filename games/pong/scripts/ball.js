@@ -1,5 +1,5 @@
 
-const DIR = [1, -2];
+const DIR = [1, -1];
 
 const RAND_VALUE = (arr) => {
   const index = Math.floor(Math.random() * arr.length);
@@ -12,7 +12,7 @@ class Ball {
     this.radius = radius;
     
     // Set speed
-    this.speed = 3;
+    this.speed = 10;
     
     // Set position and direction
     this.x = 0;
@@ -38,8 +38,22 @@ class Ball {
   }
   
   randomDir () {
-    this.dx = RAND_VALUE(DIR) + Math.random();
-    this.dy = RAND_VALUE(DIR) + Math.random();
+    // 0.4 <= dx, dy <= 0.6
+    // 위의 값이 가장 이상적인 이동속도를 보인다.
+    
+    this.dx = Math.random();
+    this.dy = Math.random();
+    
+    if (this.dx < 0.1) this.dx *= 10;
+    if (this.dx < 0.4) this.dx += 0.3;
+    if (this.dx > 0.7) this.dx -= 0.3;
+    
+    if (this.dy < 0.1) this.dy *= 10;
+    if (this.dy < 0.4) this.dy += 0.3;
+    if (this.dy > 0.7) this.dy -= 0.3;
+    
+    this.dx *= RAND_VALUE(DIR);
+    this.dy *= RAND_VALUE(DIR);
   }
   
   draw (ctx) {

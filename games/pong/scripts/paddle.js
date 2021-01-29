@@ -1,13 +1,15 @@
 
 class Paddle {
-  constructor (width, height) {
+  constructor (width, height, maxHeight) {
     this.x = 0;
     this.y = 0;
     
     this.width = width;
     this.height = height;
     
-    this.speed = 20;
+    this.maxHeight = maxHeight;
+    
+    this.speed = 10;
   }
   
   draw (ctx) {
@@ -19,11 +21,13 @@ class Paddle {
   }
   
   up () {
-    this.y -= this.speed;
+    if (this.y - this.speed >= 0)
+      this.y -= this.speed;
   }
   
   down () {
-    this.y += this.speed;
+    if (this.y + this.speed <= this.maxHeight - this.height)
+      this.y += this.speed;
   }
   
   collisionWith(tx, ty) {
