@@ -12,29 +12,48 @@ class Counter {
     this.speed = speed;
   }
   
-  clear (target) {
-    // Set number
+  set (target, message=null) {
+    // Set: number
     this.num = 0;
     this.target = target;
-
-    // Set timestamp
-    this.timestamp = null;
     
-    // Activate
-    this.isActive = true;
+    // Set: message
+    this.message = message;
+
+    this.timestamp = null;    // Timestamp
+    this.isActive = true;     // Activate Counter
   }
   
   draw (ctx) {
     // Check activate
     if (!this.isActive) return;
     
-    // Set font
-    ctx.font = '40px san-serlf bold'
+    // Set color and align
     ctx.fillStyle = '#FFFFFF';
+    ctx.textAlign = 'center';
+    
+    // Check message
+    let text = '';
+    
+    if (this.message == null) {
+      // Set font
+      ctx.font = '40px san-serlf bold'
+      
+      // Set text
+      text = this.target - this.num;
+      
+    } else {
+      // Set font
+      ctx.font = '20px san-serlf bold'
+      
+      // Get text
+      const index = Math.floor(this.num / this.message.length);
+      text = this.message[index];
+    }
+    
     
     // Draw text
-    const text = this.target - this.num;
-    ctx.fillText(text, this.x - 10, this.y);
+    ctx.fillText(text, this.x, this.y);
   }
   
   update (frame) {

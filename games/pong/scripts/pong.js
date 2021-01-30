@@ -121,6 +121,9 @@ class PongGame extends VideoGame {
     
     // Reset
     this.reset();
+    
+    // Ready counter
+    this.counter.set(3, ['Ready', 'Game Start']);
   }
   
   reset () {
@@ -257,7 +260,7 @@ class PongGame extends VideoGame {
       this.isGameOver = true;
       
       // Counting
-      this.counter.clear(3);
+      this.counter.set(3);
     }
   }
   
