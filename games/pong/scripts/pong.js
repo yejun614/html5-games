@@ -86,8 +86,8 @@ class PongGame extends VideoGame {
     this.width = 500;
     this.height = 350;
     
-    // Set mode
-    this.mode = 'twin'  // sole, twin, online
+    // Set paddle mode
+    this.mode = ['auto', 'huamn'];  // auto, human
     
     // Initial
     this.initial();
@@ -100,30 +100,41 @@ class PongGame extends VideoGame {
     // Apply canvas size
     this.canvas.width = this.width;
     this.canvas.height = this.height;
-    
+
     // Set scores
     this.scoreA = 0;
     this.scoreB = 0;
-    
+
     // Create counter
     this.counter = new Counter(this.width/2, this.height/2, 1000);
-    
-    // Create paddles
-    this.paddleA = new Paddle(5, 100, this.height);
-    this.paddleB = new Paddle(5, 100, this.height);
-    
+
     // Create ball
     this.ball = new Ball(10);
-    
+
+    // Create paddles
+    this.paddleA = this.newPaddle(this.mode[0]);
+    this.paddleB = this.newPaddle(this.mode[1]);
+
     // Add keyboard event
     this.toggleKeys['Escape'] = false;
     this.setKeyboard();
-    
+
     // Reset
     this.reset();
-    
+
     // Ready counter
     this.counter.set(3, ['Ready', 'Game Start']);
+  }
+  
+  newPaddle (mode) {
+    if (mode === 'human') {
+      return new Paddle(5, 100, this.height);
+    } else if (mode === 'auto') {
+      return new AutoPaddle(this.ball, 100, 5, 100, this.height);
+    }
+    
+    // Default human
+    return new Paddle(5, 100, this.height);
   }
   
   reset () {
@@ -242,6 +253,10 @@ class PongGame extends VideoGame {
     if (this.isGameOver) {
       this.reset();  // Reset
     }
+    
+    // AutoPaddle update
+    if (this.mode[0] === 'auto') this.paddleA.update(frame);
+    if (this.mode[1] === 'auto') this.paddleB.update(frame);
     
     // Draw
     this.draw();
