@@ -4,6 +4,11 @@ class Icon {
     this.img = new Image();
     this.img.src = src;
   }
+
+  resize (width, height) {
+    this.img.width = width;
+    this.img.height = height;
+  }
 }
 
 

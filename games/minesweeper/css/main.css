@@ -19,3 +19,21 @@
   justify-content: center;
   align-items: center;
 }
+
+/* Level Box */
+#level-box {
+  width: fit-content;
+  height: fit-content;
+
+  position: fixed;
+  top: 10px;
+  left: 20px;
+
+  border: 1px solid #54756E;
+  padding: 3px 10px;
+}
+
+#level-box a {
+  color: black;
+  text-decoration: blink;
+}
