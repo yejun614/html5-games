@@ -22,20 +22,39 @@
     <script src="./scripts/IconLoader.js" type="text/javascript"></script>
     <!-- Mine Sweeper Game -->
     <script src="./scripts/MineSweeper.js" type="text/javascript"></script>
+    <!-- Game Display -->
+    <script src="./scripts/display.js" type="text/javascript"></script>
   </head>
 
   <body>
     <div id="center-box">
+      <div id="message"></div>
+
+      <div id="display">
+        <span class="count"></span>
+        <button class="restart"></button>
+        <span class="playtime"></span>
+      </div>
+
       <canvas id="game"></canvas>
+    </div>
+
+    <div id="level">
+      <a class="active" href="#" onclick="changeSetting(9, 9, 10)">Beginner</a>
+      <a href="#" onclick="changeSetting(16, 16, 40)">Amateur</a>
+      <a href="#" onclick="changeSetting(30, 16, 99)">Professional</a>
+      <a href="#">Customize</a>
+    </div>
+
+    <div id="custom">
+      <input type="text" name="columns" placeholder="Columns">
+      <input type="text" name="rows" placeholder="Rows">
+      <input type="text" name="count" placeholder="Mines">
+
+      <button onclick="customApply()">Apply</button>
     </div>
 
     <!-- Entry Point -->
     <script src="./scripts/main.js" type="text/javascript"></script>
-
-    <div id="level-box">
-      <a href="#" onclick="game.initial(9, 9, 10)">Beginner</a>
-      <a href="#" onclick="game.initial(16, 16, 40)">Amateur</a>
-      <a href="#" onclick="game.initial(30, 16, 99)">professional</a>
-    </div>
   </body>
 </html>

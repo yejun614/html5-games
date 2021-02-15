@@ -1,4 +1,11 @@
+/* Game Styles */
 @import url('./game.css');
+
+/* Digital-7 mono font */
+@font-face {
+  font-family: "digital-7 Mono";
+  src: url("../res/fonts/digital-7/digital-7\ \(mono\).ttf");
+}
 
 /* Reset */
 * {
@@ -16,24 +23,72 @@
   left: 0;
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 /* Level Box */
-#level-box {
-  width: fit-content;
-  height: fit-content;
-
+#level {
   position: fixed;
   top: 10px;
   left: 20px;
-
-  border: 1px solid #54756E;
-  padding: 3px 10px;
 }
 
-#level-box a {
+#level a {
   color: black;
   text-decoration: blink;
+  text-transform: uppercase;
+
+  margin: 0 5px;
+}
+
+#level a.active {
+  border-bottom: 2px solid #54756E;
+}
+
+/* Custom */
+#custom {
+  position: fixed;
+  top: 50px;
+  left: 20px;
+
+  display: flex;
+
+  visibility: hidden;
+}
+
+#custom.active {
+  visibility: visible;
+}
+
+#custom input[type='text'] {
+  width: 100px;
+  height: 30px;
+
+  font-size: 16px;
+  text-align: center;
+
+  border: 2px solid #54756E;
+  border-radius: 5px;
+
+  margin: 5px;
+  padding: 3px 5px;
+}
+
+#custom button {
+  width: 100px;
+  height: 38px;
+
+  background-color: #54756E;
+  
+  border: none;
+  border-radius: 5px;
+
+  margin: 5px;
+  padding: 5px 10px;
+
+  color: white;
+  font-size: 16px;
+  text-transform: uppercase;
 }
