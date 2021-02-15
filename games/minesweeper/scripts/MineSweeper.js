@@ -85,6 +85,26 @@ class MineSweeper {
     }
   }
 
+  chord (x, y) {
+    // 범위 확인
+    if (!this.inRange(x, y)) return;
+
+    // Context 객체 가져오기
+    const ctx = this.context;
+
+    // 주변 3x3 위치 확인
+    this.getAround(x, y, (tx, ty) => {
+      // 이미 열려있는 칸은 제외
+      if (this.board[ty][tx] > 0 || this.board[ty][tx] < -1 || this.flagBoard[ty][tx] > 0) return;
+
+      // 해당 칸 활성화
+      this.flagBoard[ty][tx] = 3;
+
+      // 일정 시간뒤 해당 칸 비활성화
+      setTimeout(() => (this.flagBoard[ty][tx] = 0), 100);
+    });
+  }
+
   // (x, y) 좌표 주변에 있는 지뢰의 개수를 반환 한다.
   // 만약 주변 3x3 에 지뢰가 없는 경우 주변에 맞닿아 있는 지뢰를 찾아 반환 한다.
   // 찾은 지뢰의 개수는 게임 보드에 직접 기록한다.
@@ -215,6 +235,11 @@ class MineSweeper {
         } else if (el == 2) {
           // Question flag
           ctx.drawImage(IHelp.img, tx, ty, this.tileHeight/2, this.tileHeight/2);
+
+        } else if (el == 3) {
+          // Chord
+          ctx.fillStyle = '#628A81';
+          ctx.fillRect(x * tWidth, y * tHeight, tWidth, tHeight);
         }
       });
     });
@@ -279,6 +304,8 @@ class MineSweeper {
     const y = this.hoverTileY;
 
     if (event.which === 1) {
+      // 마우스 좌 클릭
+
       // First click chance
       if (this.digCount == 0) {
         this.putMines(x, y);
@@ -296,9 +323,18 @@ class MineSweeper {
       // Count
       this.digCount ++;
 
+    } else if (event.which === 2) {
+      // 마우스 좌, 우 동시 클릭
+
+      // 화음
+      this.chord(x, y);
+
     } else if (event.which === 3) {
+      // 마우스 우 클릭
+
       // Put flag
       this.putFlag(x, y);
+
     }
   }
 
