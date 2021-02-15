@@ -38,7 +38,6 @@ class MineSweeper {
     // Clear board array
     this.board = [...Array(rows)].map(x => Array(columns).fill(0));
     this.flagBoard = [...Array(rows)].map(x => Array(columns).fill(0));
-    this.putMines();
 
     // Hover tile
     this.hoverTileX = -1;
@@ -57,15 +56,15 @@ class MineSweeper {
     console.log('Game Over');
   }
 
-  putMines () {
+  putMines (x, y) {
     let count = this.count;
 
     while (count > 0) {
-      const x = Math.floor(Math.random() * this.columns);
-      const y = Math.floor(Math.random() * this.rows);
+      const tx = Math.floor(Math.random() * this.columns);
+      const ty = Math.floor(Math.random() * this.rows);
 
-      if (this.board[y][x] == 0) {
-        this.board[y][x] = -1;
+      if (this.board[ty][tx] == 0 && tx != x && ty != y) {
+        this.board[ty][tx] = -1;
         count --;
       }
     }
@@ -290,14 +289,8 @@ class MineSweeper {
 
     if (event.which === 1) {
       // First click chance
-      if (this.board[y][x] == -1 && this.digCount == 0) {
-        this.board[y][x] = 0;
-        
-        if (x == 0) {
-          this.board[y+1][x] = -1;
-        } else {
-          this.board[y-1][x] = -1;
-        }
+      if (this.digCount == 0) {
+        this.putMines(x, y);
       }
 
       // Mine
