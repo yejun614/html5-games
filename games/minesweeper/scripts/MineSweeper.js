@@ -44,15 +44,23 @@ class MineSweeper {
 
     // Game Over Flag
     this.isGameOver = false;
+    this.isWon = false;
 
     // Play game
     this.play();
   }
 
   gameOver () {
+    // Game Over
     this.isGameOver = true;
 
-    console.log('Game Over');
+    // Check won or lose
+    if (this.digCount + this.count == this.columns * this.rows) {
+      this.isWon = true;
+    }
+
+    // Debug message
+    console.log('Game Over', this.isWon ? 'Won' : 'Loss');
   }
 
   putMines (x, y) {
@@ -117,6 +125,9 @@ class MineSweeper {
 
     // Clear flag
     this.flagBoard[y][x] = 0;
+
+    // Increase dig count
+    this.digCount ++;
 
     // Counting mines around in the board
     let count = 0;
@@ -311,30 +322,24 @@ class MineSweeper {
         this.putMines(x, y);
       }
 
-      // Mine
+      // Click the Mine
       if (this.board[y][x] == -1) {
         this.gameOver();
         return;
       }
 
-      // Check Ground
+      // Dig ground
       this.dig(x, y);
-
-      // Count
-      this.digCount ++;
-
     } else if (event.which === 2) {
       // 마우스 좌, 우 동시 클릭
 
-      // 화음
+      // Chord
       this.chord(x, y);
-
     } else if (event.which === 3) {
       // 마우스 우 클릭
 
       // Put flag
       this.putFlag(x, y);
-
     }
   }
 
@@ -344,6 +349,11 @@ class MineSweeper {
 
     // Draw
     this.draw();
+
+    // Check dig count
+    if (this.digCount + this.count >= this.columns * this.rows) {
+      this.gameOver();
+    }
 
     // Check Game Over
     if (this.isGameOver) {
