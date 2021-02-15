@@ -5,19 +5,18 @@ class MineSweeper {
     this.canvas = document.querySelector(selector);
     this.context = this.canvas.getContext('2d');
 
+    // Set mouse event
+    this.setMouseEvent();
+
     // Set animation controller
     this.animation = null
 
     // Set tile size
-    this.tileWidth = 50;
-    this.tileHeight = 50;
+    this.tileWidth = 28;
+    this.tileHeight = 28;
   }
 
   initial (columns, rows, count) {
-    // Set mouse event
-    this.clearMouseEvent();
-    this.setMouseEvent();
-
     // Set board size
     this.columns = columns;
     this.rows = rows;
@@ -190,7 +189,7 @@ class MineSweeper {
           ctx.fillStyle = '#83C9AD';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.font = '20px serif';
+          ctx.font = `bold ${this.tileHeight/1.5}px monospace`;
           ctx.fillText(el, x * tWidth + tWidth/2, y * tHeight + tHeight/2);
         }
       });
@@ -211,11 +210,11 @@ class MineSweeper {
 
         if (el == 1) {
           // Mine flag
-          ctx.drawImage(IFlag.img, tx, ty);
+          ctx.drawImage(IFlag.img, tx, ty, this.tileHeight/2, this.tileHeight/2);
 
         } else if (el == 2) {
           // Question flag
-          ctx.drawImage(IHelp.img, tx, ty);
+          ctx.drawImage(IHelp.img, tx, ty, this.tileHeight/2, this.tileHeight/2);
         }
       });
     });
@@ -239,7 +238,7 @@ class MineSweeper {
           ctx.strokeStyle = '#83C9AD';
           ctx.strokeRect(x * tWidth, y * tHeight, tWidth, tHeight);
 
-          ctx.drawImage(IFlower.img, tx, ty);
+          ctx.drawImage(IFlower.img, tx, ty, this.tileHeight/2, this.tileHeight/2);
 
           // Collect mine position
           if (this.flagBoard[y][x] == 1) {
@@ -259,17 +258,9 @@ class MineSweeper {
   }
 
   setMouseEvent () {
-    this.canvas.addEventListener('mousemove', event => this.mouseMoveHandler(event));
-    this.canvas.addEventListener('mousedown', event => this.mouseDownHandler(event));
-
-    this.canvas.addEventListener('contextmenu', event => {event.preventDefault()});
-  }
-
-  clearMouseEvent () {
-    this.canvas.removeEventListener('mousemove', event => this.mouseMoveHandler(event));
-    this.canvas.removeEventListener('mousedown', event => this.mouseDownHandler(event));
-
-    this.canvas.removeEventListener('contextmenu', event => {event.preventDefault()});
+    this.canvas.addEventListener('mousemove', event => this.mouseMoveHandler(event), false);
+    this.canvas.addEventListener('mousedown', event => this.mouseDownHandler(event), false);
+    this.canvas.addEventListener('contextmenu', event => {event.preventDefault()}, false);
   }
 
   mouseMoveHandler (event) {

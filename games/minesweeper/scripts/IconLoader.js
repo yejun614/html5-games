@@ -4,13 +4,7 @@ class Icon {
     this.img = new Image();
     this.img.src = src;
   }
-
-  resize (width, height) {
-    this.img.width = width;
-    this.img.height = height;
-  }
 }
-
 
 // Flag
 IFlag = new Icon("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNCAyNGgtMnYtMjRoMnYyNHptMTgtMjJoLTE2djEyaDE2bC00LTUuOTY5IDQtNi4wMzF6Ii8+PC9zdmc+");
