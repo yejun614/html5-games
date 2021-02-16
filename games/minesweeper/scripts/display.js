@@ -14,7 +14,10 @@ class GameDisplay {
     this.playtimeLabel = this.displayEl.querySelector('.playtime');
 
     // Set event to Restart button
-    this.restartBtn.addEventListener('click', () => initialGame());
+    this.restartBtn.addEventListener('click', () => {
+      this.game.initial(this.game.columns, this.game.rows, this.game.count);
+      this.initial();
+    });
 
     // Animation
     this.animation = null;

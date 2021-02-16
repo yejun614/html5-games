@@ -1,7 +1,6 @@
 
 /* Canvas, Display Box */
 #game, #display {
-  border: 2px solid #628A81;
   border-radius: 5px;
 
   margin: 10px 0;
@@ -56,4 +55,9 @@
 /* Message */
 #message {
   font-size: 16px;
+
+  border-bottom: 2px solid #628A81;
+
+  padding: 3px 5px;
+  margin-bottom: 5px;
 }

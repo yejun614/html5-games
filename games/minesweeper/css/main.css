@@ -62,7 +62,7 @@
   visibility: visible;
 }
 
-#custom input[type='text'] {
+#custom input[type='number'] {
   width: 100px;
   height: 30px;
 

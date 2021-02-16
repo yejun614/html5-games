@@ -17,6 +17,12 @@ class MineSweeper {
   }
 
   initial (columns, rows, count) {
+    // Minimum number
+    if (columns < 5 || rows < 5 || count < 3) {
+      console.log(`Too few numbers (${columns}, ${rows}, ${count})`);
+      return;
+    }
+
     // Set board size
     this.columns = columns;
     this.rows = rows;
