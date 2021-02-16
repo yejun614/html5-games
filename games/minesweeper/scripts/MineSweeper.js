@@ -270,7 +270,11 @@ class MineSweeper {
           const ty = y * tHeight + tHeight/4;
 
           ctx.fillStyle = '#628A81';
+          if (x == this.hoverTileX && y == this.hoverTileY) {
+            ctx.fillStyle = '#b84242';
+          }
           ctx.fillRect(x * tWidth, y * tHeight, tWidth, tHeight);
+          
           ctx.strokeStyle = '#83C9AD';
           ctx.strokeRect(x * tWidth, y * tHeight, tWidth, tHeight);
 
