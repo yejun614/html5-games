@@ -1,0 +1,63 @@
+
+/* Canvas, Display Box */
+#game, #display {
+  border-radius: 5px;
+
+  margin: 10px 0;
+}
+
+/* Display Box */
+#display {
+  width: 250px;
+
+  padding: 5px 0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#display > * {
+  margin: 0 20px;
+}
+
+#display > span {
+  color: #54756E;
+  font-size: 28px;
+  font-weight: bold;
+  font-family: "digital-7 Mono";
+
+  padding-bottom: 5px;
+}
+
+/* Restart button */
+#display button.restart {
+  width: 25px;
+  height: 25px;
+
+  border: none;
+  border-radius: 50%;
+  background-color: #628A81;
+}
+
+#display button.restart:hover {
+  background-color: #83C9AD;
+}
+
+#display button.restart:focus {
+  outline: none;
+}
+
+#display button.restart:active {
+  background-color: #54756E;
+}
+
+/* Message */
+#message {
+  font-size: 16px;
+
+  border-bottom: 2px solid #628A81;
+
+  padding: 3px 5px;
+  margin-bottom: 5px;
+}
