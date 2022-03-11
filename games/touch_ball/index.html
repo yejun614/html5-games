@@ -1,0 +1,177 @@
+<!--
+
+	- 2020.11.22 (SUN)
+	- 간단한 HTML5 게임 제작: 제한된 시간내에 랜덤으로 이동하는 공을 많이 클릭하는 게임
+
+  -->
+
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		
+		<style>
+			* { margin:0; padding: 0; }
+			
+			body {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				align-items: center;
+				
+				position: absolute;
+				width: 100%;
+				height: 100%;
+			}
+			
+			#score {
+				margin-top: 100px;
+				display: flex;
+				
+				font-size: 100px;
+				font-family: sans-serif;
+				
+				border-bottom: 10px solid black;
+			}
+			
+			#stage {
+				margin-bottom: 100px;
+				width: 90%;
+				height: 50%;
+				border: 3px solid skyblue;
+			}
+			
+			#ball {
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				
+				background-color: midnightblue;
+				
+				position: relative;
+			}
+			
+			#ball:hover {
+				background-color: blue;
+			}
+		</style>
+	</head>
+
+	<body>
+		<span id="score">0</span>
+		
+		<span id="stopwatch">공을 누르면 게임이 시작됩니다. 공을 최대한 많이 눌러보세요!</span>
+		
+		<div id="stage">
+			<div id="ball"></div>
+		</div>
+		
+		<script>
+			const Stage = document.getElementById('stage');
+			const Score = document.getElementById('score');
+			const Ball = document.getElementById('ball');
+			const Stopwatch = document.getElementById('stopwatch');
+			const Gameover = document.getElementById('gameover');
+			
+			function moveBall(x, y) {
+				x -= 25;
+				y -= 25;
+
+				Ball.style.cssText = `top: ${y}px; left: ${x}px;`;
+			}
+
+			function rand(min, max) {
+				return Math.random() * (max - min) + min;
+			}
+			
+			watch = 0;
+			
+			function timer(millisecond, callback) {
+				watch = millisecond;
+				buf = Date.now();
+				
+				key = 0;
+				const func = () => {
+					key = window.requestAnimationFrame(func);
+					
+					now = Date.now();
+					watch -= now - buf;
+					
+					Stopwatch.innerHTML = watch;
+					
+					if (watch < 0) {
+						callback();
+						
+						window.cancelAnimationFrame(key);
+					}
+					
+					buf = now;
+				}
+				
+				key = window.requestAnimationFrame(func);
+			};
+			
+			class Game {
+				constructor() {
+					this.inital();
+				}
+				
+				inital() {
+					this.gameScore = 0;
+					
+					// Game State
+					// -1: STOP
+					//  0: PAUSE
+					//  1: PLAYING
+					this.gameState = -1;
+					
+					this.resize();
+					window.addEventListener('resize', this.resize);
+					
+					Ball.addEventListener("click", ()=>{this.down()});
+				}
+				
+				start() {
+					this.gameScore = 0;
+					this.gameState = 1;
+				}
+				
+				stop() {
+					this.gameState = -1;
+				}
+				
+				over() {
+					this.stop();
+					
+					Stopwatch.innerHTML = "GAME OVER!";
+				}
+				
+				resize() {
+					this.stageWidth = Stage.offsetWidth;
+					this.stageHeight = Stage.offsetHeight;
+				}
+				
+				down() {
+					if (this.gameState < 1) {
+						if (!confirm('Start game ?')) {
+							return;
+						}
+						
+						this.start();
+					}
+					
+					// 여기서 부터 계속 코드진행
+					timer(800, ()=>{this.over()});
+					
+					this.gameScore ++;
+					Score.innerHTML = this.gameScore;
+					
+					moveBall(rand(0, this.stageWidth-50), rand(0, this.stageHeight-50));
+				}
+			}
+			
+			const game = new Game();
+		</script>
+	</body>
+</html>
